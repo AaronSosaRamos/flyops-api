@@ -1,4 +1,5 @@
 fastapi
+fastapi[standard]
 langchain
 langchain_core
 langchain-community
