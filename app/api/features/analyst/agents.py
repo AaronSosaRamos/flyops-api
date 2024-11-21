@@ -2,10 +2,10 @@ from crewai import Agent
 from textwrap import dedent
 from langchain_openai import ChatOpenAI
 from crewai.tools import tool
-from langchain_community.tools import TavilySearchResults
 from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import SerpAPIWrapper
+from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -25,12 +25,10 @@ def serp_api_search(query: str) -> str:
 @tool
 def tavily_search(query: str) -> str:
     """Perform a search with Tavily, including answers and raw content."""
-    tavily = TavilySearchResults(
-        max_results=5,
-        include_answer=True,
-        include_raw_content=True
-    )
-    return tavily.run(query)
+
+    tavily_search_wrapper = TavilySearchAPIWrapper()
+
+    return tavily_search_wrapper.results(query=query, max_results=5, search_depth="advanced")
 
 class FlyOpsAnalystAgents:
     def __init__(self):
